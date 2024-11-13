@@ -34,13 +34,14 @@ def sync_woocommerce_orders():
                         make_woocommerce_log(status="Error", method="sync_woocommerce_orders", message=frappe.get_traceback(),
                             request_data=woocommerce_order, exception=True)
                     except Exception as e:
-                        if e.args and e.args[0] and e.args[0].decode("utf-8").startswith("402"):
+                        if e.args and e.args[0] and str(e.args[0]).startswith("402"):
                             raise e
                         else:
                             make_woocommerce_log(title=e.message, status="Error", method="sync_woocommerce_orders", message=frappe.get_traceback(),
                                 request_data=woocommerce_order, exception=True)
             # close this order as synced
             close_synced_woocommerce_order(woocommerce_order.get("id"))
+
                 
 def get_woocommerce_order_status_for_import():
     status_list = []
@@ -137,7 +138,7 @@ def create_new_customer_of_guest(woocommerce_order):
         customer.insert()
         
         if customer:
-            create_customer_address(customer, woocommerce_order)
+            create_customer_address(woocommerce_order)
             create_customer_contact(customer, woocommerce_order)
     
         frappe.db.commit()
@@ -149,7 +150,7 @@ def create_new_customer_of_guest(woocommerce_order):
         if e.args[0] and e.args[0].startswith("402"):
             raise e
         else:
-            make_woocommerce_log(title=e.message, status="Error", method="create_new_customer_of_guest", message=frappe.get_traceback(),
+            make_woocommerce_log(title=str(e), status="Error", method="create_new_customer_of_guest", message=frappe.get_traceback(),
                 request_data=woocommerce_order, exception=True)
         
 def get_country_name(code):
@@ -243,6 +244,7 @@ def create_sales_order(woocommerce_order, woocommerce_settings, company=None):
     return so
 
 def get_customer_address_from_order(type, woocommerce_order, customer):
+    woocommerce_customer = get_woocommerce_customer(customer)
     address_record = woocommerce_order[type.lower()]
     address_name = frappe.db.get_value("Address", {"woocommerce_address_id": type, "address_line1": address_record.get("address_1"), "woocommerce_company_name": address_record.get("company") or ''}, "name")
     if not address_name:

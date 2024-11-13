@@ -27,10 +27,17 @@ def get_woocommerce_settings():
     
     if d.woocommerce_url:
         d.api_secret = d.get_password(fieldname='api_secret')
-        return d.as_dict()
-    
+
+        # Assuming there is a field 'verify_ssl' in the WooCommerce Config document
+        verify_ssl = bool(d.verify_ssl)  # Convert to boolean if it's an integer
+
+        settings = d.as_dict()
+        settings['verify_ssl'] = verify_ssl  # Add verify_ssl to the settings
+
+        return settings
     else:
         frappe.throw(_("woocommerce store URL is not configured on WooCommerce Config"), woocommerceError)
+
 
 def get_request_request(path, settings=None):
         if not settings:
