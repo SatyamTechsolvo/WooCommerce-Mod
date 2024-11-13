@@ -85,7 +85,7 @@ STATE_ABBR_TO_FULL_NAME = {
     "ML": "Meghalaya", "MZ": "Mizoram", "NL": "Nagaland", "OR": "Odisha", "PB": "Punjab", "RJ": "Rajasthan",
     "SK": "Sikkim", "TN": "Tamil Nadu", "TS": "Telangana", "TR": "Tripura", "UP": "Uttar Pradesh", 
     "UK": "Uttarakhand", "WB": "West Bengal", "AN": "Andaman and Nicobar Islands", "LD": "Lakshadweep",
-    "DN": "Dadra and Nagar Haveli", "DL": "Delhi", "JH": "Jharkhand"
+    "DN": "Dadra and Nagar Haveli", "DL": "Delhi", "JH": "Jharkhand", "CH": "Chandigarh"
 }
 
 def create_customer_address(woocommerce_customer, customer_name):
