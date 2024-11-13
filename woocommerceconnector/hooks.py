@@ -12,7 +12,6 @@ app_email = "info@libracore.com"
 app_license = "AGPL"
 app_url = "https://github.com/libracore/woocommerceconnector"
 
-fixtures = ["Custom Field"]
 # Includes in <head>
 # ------------------
 
